@@ -1,0 +1,1 @@
+Voice AI in mic , with pipecat. working as expected.
