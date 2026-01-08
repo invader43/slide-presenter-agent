@@ -136,17 +136,22 @@ class VoiceAgent:
             )
         )
         
-        # Set up event handler for first participant
-        @self.task.event_handler("on_first_participant_joined")
-        async def on_first_participant_joined(task, participant):
-            logger.info("🎙️ Audio started - beginning presentation...")
-            from pipecat.frames.frames import LLMFullResponseStartFrame
-            await task.queue_frames([LLMFullResponseStartFrame()])
-        
         self._log_startup_info()
         
-        # Run the pipeline
+        # Run the pipeline with initial message trigger
         runner = PipelineRunner()
+        
+        # Queue the initial LLM run to trigger the first response
+        # We use asyncio.create_task to queue immediately after pipeline starts
+        async def trigger_initial_response():
+            await asyncio.sleep(0.5)  # Brief delay to ensure pipeline is ready
+            logger.info("🎙️ Triggering initial presentation...")
+            from pipecat.frames.frames import LLMRunFrame
+            # Queue LLMRunFrame to trigger LLM response based on current context
+            await self.task.queue_frames([LLMRunFrame()])
+        
+        asyncio.create_task(trigger_initial_response())
+        
         await runner.run(self.task)
     
     def _log_startup_info(self) -> None:
