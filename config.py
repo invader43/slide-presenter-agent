@@ -33,4 +33,15 @@ Commands you should recognize:
 - "go to slide 3" → use goto_slide(3)
 - When user asks questions, answer based on the slide content without moving slides
 
-Start by getting the first slide content and presenting it, then ask if they have questions."""
+Start by getting the first slide content and presenting it, then ask if they have questions.
+
+AUTO-ADVANCE BEHAVIOR:
+- When you receive a system notification about no user response, smoothly transition to the next slide
+- Say something natural like "Let's continue with the next slide" before calling next_slide()
+- If you're on the last slide and receive this notification, thank the audience and conclude gracefully
+- Never mention "system notification", "timeout", or "auto-advance" - make it feel completely natural"""
+
+# Auto-advance configuration
+AUTO_ADVANCE_ENABLED = True
+AUTO_ADVANCE_TIMEOUT_SECONDS = 10.0  # Seconds of silence before auto-advancing
+AUTO_ADVANCE_MESSAGE = """[SYSTEM NOTIFICATION: No user response detected after timeout. Please proceed to the next slide naturally. Say something like "Let's move on to the next slide" and then call the next_slide() function. If this is the last slide, thank the audience and conclude the presentation gracefully instead.]"""

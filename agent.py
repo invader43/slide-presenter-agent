@@ -21,14 +21,24 @@ from pipecat.services.openai.realtime.events import (
     SessionProperties,
 )
 
-from config import OPENAI_MODEL, OPENAI_VOICE, AGENT_INSTRUCTIONS
+from config import (
+    OPENAI_MODEL,
+    OPENAI_VOICE,
+    AGENT_INSTRUCTIONS,
+    AUTO_ADVANCE_ENABLED,
+    AUTO_ADVANCE_TIMEOUT_SECONDS,
+    AUTO_ADVANCE_MESSAGE,
+)
 from tools import create_tools_schema
 from handlers import (
     next_slide,
     previous_slide,
     goto_slide,
     get_current_slide_content,
+    set_silence_monitor,
 )
+from silence_monitor import SilenceMonitor
+from processors import SpeechEventProcessor
 
 
 class VoiceAgent:
@@ -39,6 +49,16 @@ class VoiceAgent:
         self.transport = None
         self.realtime = None
         self.task = None
+        
+        # Initialize silence monitor for auto-advance
+        self.silence_monitor = SilenceMonitor(
+            timeout_seconds=AUTO_ADVANCE_TIMEOUT_SECONDS,
+            auto_advance_message=AUTO_ADVANCE_MESSAGE,
+            enabled=AUTO_ADVANCE_ENABLED,
+        )
+        
+        # Set the global silence monitor reference for handlers
+        set_silence_monitor(self.silence_monitor)
     
     def _create_transport(self) -> LocalAudioTransport:
         """Create the audio transport."""
@@ -92,15 +112,26 @@ class VoiceAgent:
             tools=create_tools_schema(),
         )
     
+    def _create_speech_event_processor(self) -> SpeechEventProcessor:
+        """Create processor to detect speech events for silence monitoring."""
+        return SpeechEventProcessor(
+            on_ai_started=self.silence_monitor.on_ai_started_speaking,
+            on_ai_stopped=self.silence_monitor.on_ai_stopped_speaking,
+            on_user_started=self.silence_monitor.on_user_speech_detected,
+            on_user_stopped=self.silence_monitor.on_user_speech_ended,
+        )
+    
     def _create_pipeline(
         self,
         transport: LocalAudioTransport,
         realtime: OpenAIRealtimeLLMService,
-        context_aggregator: LLMContextAggregatorPair
+        context_aggregator: LLMContextAggregatorPair,
+        speech_processor: SpeechEventProcessor,
     ) -> Pipeline:
         """Create the processing pipeline."""
         return Pipeline([
             transport.input(),
+            speech_processor,  # Detect speech events for auto-advance
             context_aggregator.user(),
             realtime,
             transport.output(),
@@ -119,11 +150,15 @@ class VoiceAgent:
         context = self._create_context(initial_slide)
         context_aggregator = LLMContextAggregatorPair(context)
         
+        # Create speech event processor for silence monitoring
+        speech_processor = self._create_speech_event_processor()
+        
         # Create pipeline
         pipeline = self._create_pipeline(
             self.transport,
             self.realtime,
-            context_aggregator
+            context_aggregator,
+            speech_processor,
         )
         
         # Create task
@@ -135,6 +170,13 @@ class VoiceAgent:
                 enable_usage_metrics=True,
             )
         )
+        
+        # Set the pipeline task for silence monitor (needed for frame injection)
+        self.silence_monitor.set_pipeline_task(self.task)
+        
+        # Initialize last slide state
+        if not initial_slide.get('has_next', True):
+            self.silence_monitor.set_last_slide_reached(True)
         
         self._log_startup_info()
         
