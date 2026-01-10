@@ -5,20 +5,20 @@ from typing import Optional, TYPE_CHECKING
 from loguru import logger
 from pipecat.services.llm_service import FunctionCallParams
 
-from ui import PowerPointViewerUI
+from pdf_viewer import PDFSlideViewer
 
 if TYPE_CHECKING:
     from silence_monitor import SilenceMonitor
 
 
 # Global viewer instance - will be set by the agent
-slide_viewer: Optional[PowerPointViewerUI] = None
+slide_viewer: Optional[PDFSlideViewer] = None
 
 # Global silence monitor reference - will be set by the agent
 silence_monitor: Optional['SilenceMonitor'] = None
 
 
-def set_viewer(viewer: PowerPointViewerUI) -> None:
+def set_viewer(viewer: PDFSlideViewer) -> None:
     """Set the global slide viewer instance."""
     global slide_viewer
     slide_viewer = viewer
@@ -30,7 +30,7 @@ def set_silence_monitor(monitor: 'SilenceMonitor') -> None:
     silence_monitor = monitor
 
 
-def get_viewer() -> Optional[PowerPointViewerUI]:
+def get_viewer() -> Optional[PDFSlideViewer]:
     """Get the global slide viewer instance."""
     return slide_viewer
 

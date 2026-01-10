@@ -1,7 +1,7 @@
-"""Voice agent with PowerPoint slide viewer and content speaker.
+"""Voice agent with PDF slide viewer and content speaker.
 
 This is the main entry point for the slide presenter agent.
-The agent uses voice commands to navigate through PowerPoint slides
+The agent uses voice commands to navigate through PDF slides
 and presents the content using OpenAI's realtime voice API.
 """
 
@@ -11,8 +11,8 @@ import os
 from dotenv import load_dotenv
 from loguru import logger
 
-from config import DEFAULT_SLIDES_PATH
-from ui import PowerPointViewerUI
+from config import DEFAULT_SLIDES_PATH, PDF_RENDER_DPI
+from pdf_viewer import PDFSlideViewer
 from handlers import set_viewer
 from agent import VoiceAgent
 
@@ -30,12 +30,12 @@ async def main() -> None:
         logger.info("Get your API key from: https://platform.openai.com/api-keys")
         return
 
-    # Initialize and start slide viewer UI
-    logger.info("📊 Initializing PowerPoint viewer UI...")
-    viewer = PowerPointViewerUI(DEFAULT_SLIDES_PATH)
+    # Initialize and start PDF slide viewer UI
+    logger.info("📊 Initializing PDF slide viewer UI...")
+    viewer = PDFSlideViewer(DEFAULT_SLIDES_PATH, dpi=PDF_RENDER_DPI)
     
     if not viewer.slides:
-        logger.error("No slides loaded! Please ensure slides.pptx exists.")
+        logger.error("No slides loaded! Please ensure slides.pdf exists.")
         return
     
     # Set the global viewer for handlers

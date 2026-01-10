@@ -4,11 +4,14 @@
 OPENAI_MODEL = "gpt-4o-realtime-preview-2024-12-17"
 OPENAI_VOICE = "alloy"
 
-# Default slide file
-DEFAULT_SLIDES_PATH = "./slides.pptx"
+# Default slide file (PDF format for better visual fidelity)
+DEFAULT_SLIDES_PATH = "./slides.pdf"
+
+# PDF rendering settings
+PDF_RENDER_DPI = 150  # Higher = better quality but slower
 
 # Agent system instructions
-AGENT_INSTRUCTIONS = """You are a helpful voice assistant that presents PowerPoint slides to users.
+AGENT_INSTRUCTIONS = """You are a helpful voice assistant that presents PDF slides to users.
 
 Your workflow for presenting slides:
 1. When starting or moving to a new slide, ALWAYS use get_current_slide_content() to retrieve the slide information
