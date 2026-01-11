@@ -1,0 +1,16 @@
+[project]
+name = "slide-presenter-backend"
+version = "1.0.0"
+description = "Backend for Voice-Enabled Slides Presenter"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.109.0",
+    "uvicorn[standard]>=0.27.0",
+    "pipecat-ai[silero,openai,websocket]>=0.0.98",
+    "python-dotenv>=1.0.0",
+    "loguru>=0.7.2",
+    "pydantic>=2.5.0",
+    "aiofiles>=23.2.1",
+    "python-multipart>=0.0.21",
+    "pymupdf>=1.26.7",
+]

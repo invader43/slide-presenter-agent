@@ -1,0 +1,115 @@
+.control-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(26, 26, 46, 0.8);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.nav-controls {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.nav-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.nav-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.nav-button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.nav-button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.nav-button .icon {
+    font-size: 1.25rem;
+}
+
+.connection-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.connection-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border: 2px solid;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: transparent;
+}
+
+.connection-button.connect {
+    border-color: #48bb78;
+    color: #48bb78;
+}
+
+.connection-button.connect:hover {
+    background: rgba(72, 187, 120, 0.15);
+}
+
+.connection-button.disconnect {
+    border-color: #fc8181;
+    color: #fc8181;
+}
+
+.connection-button.disconnect:hover {
+    background: rgba(252, 129, 129, 0.15);
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.status-dot.connected {
+    background: #48bb78;
+    box-shadow: 0 0 8px rgba(72, 187, 120, 0.6);
+    animation: pulse 2s infinite;
+}
+
+.status-dot.disconnected {
+    background: #a0aec0;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}

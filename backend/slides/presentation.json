@@ -1,0 +1,10 @@
+{
+  "slides": [
+    {
+      "number": 1,
+      "title": "Kalewar Daksesh",
+      "content": "\u00d1 Bengaluru, India\n\u0083 +91-6301820550\n# kalewardaksesh01@gmail.com\n\u00ef LinkedIn\n\u00a7 Github\nPROFILE STATEMENT\nFounding Engineer specializing in the \u201dlast mile\u201d of AI: bridging stochastic LLMs with deterministic enterprise\ninfrastructure. Expert in architecting low-latency Agentic Voice systems, optimizing compute-intensive pipelines\nwith Numba/NumPy, and delivering reliability for 90,000+ monthly interactions. Proven track record of scaling\n0-to-1 products and handling high-concurrency Voice AI traffic for enterprise clients.\nEXPERIENCE\nFormi\nMar \u201925 \u2013 Present\nFounding Engineer\nBengaluru\n\u2022 Architected a proprietary SIP-to-WebSocket adapter, enabling seamless bi-directional audio streaming between\nlegacy PSTN networks and modern AI agents.\n\u2022 Optimized audio transcoding and mixing pipelines using Numba JIT, reducing frame processing latency to <10ms and\nensuring sub-500ms total conversational turn-around.\n\u2022 Designed a deterministic State Transition Engine to govern LLM reasoning, ensuring 100% ",
+      "notes": ""
+    }
+  ]
+}

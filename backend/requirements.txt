@@ -1,0 +1,20 @@
+# Backend Dependencies for Voice-Enabled Slides Presenter
+
+# Web Framework
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+
+# Pipecat AI with required extras
+pipecat-ai[silero,openai,websocket]>=0.0.98
+
+# Environment and Configuration
+python-dotenv>=1.0.0
+
+# Logging
+loguru>=0.7.2
+
+# Data Validation
+pydantic>=2.5.0
+
+# Async utilities
+aiofiles>=23.2.1

@@ -1,17 +1,34 @@
-"""Configuration constants for the slide presenter agent."""
+"""Configuration settings for the backend application."""
+
+import os
+from typing import List
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 # OpenAI Configuration
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 OPENAI_MODEL = "gpt-4o-realtime-preview-2024-12-17"
 OPENAI_VOICE = "alloy"
 
-# Default slide file (PDF format for better visual fidelity)
-DEFAULT_SLIDES_PATH = "./slides.pdf"
+# Server Configuration
+HOST = os.getenv("HOST", "0.0.0.0")
+PORT = int(os.getenv("PORT", "8000"))
+LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
 
-# PDF rendering settings
-PDF_RENDER_DPI = 150  # Higher = better quality but slower
+# CORS Configuration
+CORS_ORIGINS: List[str] = os.getenv(
+    "CORS_ORIGINS", 
+    "http://localhost:3000,http://localhost:5173"
+).split(",")
 
-# Agent system instructions
-AGENT_INSTRUCTIONS = """You are a helpful voice assistant that presents PDF slides to users.
+# Slide Configuration
+SLIDES_PATH = os.getenv("SLIDES_PATH", "./slides/presentation.json")
+
+# Agent System Instructions
+AGENT_INSTRUCTIONS = """You are a helpful voice assistant that presents slides to users.
 
 Your workflow for presenting slides:
 1. When starting or moving to a new slide, ALWAYS use get_current_slide_content() to retrieve the slide information
@@ -44,7 +61,6 @@ AUTO-ADVANCE BEHAVIOR:
 - If you're on the last slide and receive this notification, thank the audience and conclude gracefully
 - Never mention "system notification", "timeout", or "auto-advance" - make it feel completely natural"""
 
-# Auto-advance configuration
-AUTO_ADVANCE_ENABLED = True
-AUTO_ADVANCE_TIMEOUT_SECONDS = 10.0  # Seconds of silence before auto-advancing
-AUTO_ADVANCE_MESSAGE = """[SYSTEM NOTIFICATION: No user response detected after timeout. Please proceed to the next slide naturally. Say something like "Let's move on to the next slide" and then call the next_slide() function. If this is the last slide, thank the audience and conclude the presentation gracefully instead.]"""
+# Auto-advance Configuration
+AUTO_ADVANCE_ENABLED = os.getenv("AUTO_ADVANCE_ENABLED", "true").lower() == "true"
+AUTO_ADVANCE_TIMEOUT_SECONDS = float(os.getenv("AUTO_ADVANCE_TIMEOUT_SECONDS", "3.0"))
