@@ -66,7 +66,7 @@ OPENAI_API_KEY=your-openai-api-key-here
 
 ### 5. Add Your Slides
 
-Place your PowerPoint file as `slides.pptx` in the project root, or modify `config.py` to point to your file:
+Place your PowerPoint file in pdf format as `slides.pdf` in the project root, or modify `config.py` to point to your file:
 
 ```python
 DEFAULT_SLIDES_PATH = "./your-presentation.pptx"
